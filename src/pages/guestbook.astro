@@ -1,0 +1,457 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="留言板">
+  <section class="guestbook-hero">
+    <h1 class="guestbook-title">留言板</h1>
+    <p class="guestbook-desc">欢迎留下你的想法、建议或问候，我会认真阅读每一条留言。</p>
+  </section>
+
+  <section class="guestbook-content">
+    <div class="留言-form-container">
+      <form id="guestbook-form" class="留言-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">昵称</label>
+            <input type="text" id="name" name="name" placeholder="你的昵称" required />
+          </div>
+          <div class="form-group">
+            <label for="email">邮箱 <span class="optional">(选填)</span></label>
+            <input type="email" id="email" name="email" placeholder="不会公开显示" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">留言内容</label>
+          <textarea id="message" name="message" rows="4" placeholder="说点什么..." required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">
+          <span>提交留言</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M14 2L7 9M14 2L9.5 14L7 9M14 2L2 6.5L7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <div class="messages-section">
+      <h2 class="section-title">留言列表</h2>
+      <div id="messages-list" class="messages-list">
+        <div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p>还没有留言，来做第一个吧！</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .guestbook-hero {
+    text-align: center;
+    padding: 4rem 0 3rem;
+  }
+
+  .guestbook-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .guestbook-desc {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  .guestbook-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .留言-form-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .留言-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .optional {
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  input, textarea {
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: var(--text-muted);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .submit-btn {
+    align-self: flex-end;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    background: var(--accent-gradient);
+    color: #fff;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(108, 92, 231, 0.4);
+  }
+
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    border: 1px dashed var(--border);
+    border-radius: 16px;
+    background: var(--bg-card);
+  }
+
+  .empty-state svg {
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .empty-state p {
+    font-size: 0.95rem;
+  }
+
+  .message-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: all 0.2s ease;
+  }
+
+  .message-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+  }
+
+  .message-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .message-author {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--accent-2);
+  }
+
+  .message-time {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .message-content {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+
+  .message-card.fade-in {
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .toast.success {
+    background: #10b981;
+    color: #fff;
+  }
+
+  .toast.error {
+    background: #ef4444;
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .guestbook-hero {
+      padding: 3rem 0 2rem;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .留言-form-container {
+      padding: 1.5rem;
+    }
+
+    .submit-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  interface Message {
+    id: string;
+    name: string;
+    message: string;
+    timestamp: number;
+  }
+
+  const STORAGE_KEY = 'guestbook_messages';
+
+  function getMessages(): Message[] {
+    const data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+  }
+
+  function saveMessages(messages: Message[]): void {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+  }
+
+  function formatTime(timestamp: number): string {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    
+    if (diff < 60000) return '刚刚';
+    if (diff < 3600000) return `${Math.floor(diff / 60000)} 分钟前`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)} 小时前`;
+    if (diff < 604800000) return `${Math.floor(diff / 86400000)} 天前`;
+    
+    return date.toLocaleDateString('zh-CN', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+
+  function renderMessages(): void {
+    const list = document.getElementById('messages-list');
+    if (!list) return;
+
+    const messages = getMessages();
+    
+    if (messages.length === 0) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p>还没有留言，来做第一个吧！</p>
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = messages
+      .sort((a, b) => b.timestamp - a.timestamp)
+      .map(msg => `
+        <div class="message-card fade-in">
+          <div class="message-header">
+            <span class="message-author">${escapeHtml(msg.name)}</span>
+            <span class="message-time">${formatTime(msg.timestamp)}</span>
+          </div>
+          <div class="message-content">${escapeHtml(msg.message)}</div>
+        </div>
+      `)
+      .join('');
+  }
+
+  function escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function showToast(message: string, type: 'success' | 'error'): void {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => {
+      toast.classList.add('show');
+    });
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  function initForm(): void {
+    const form = document.getElementById('guestbook-form') as HTMLFormElement;
+    if (!form) return;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const nameInput = document.getElementById('name') as HTMLInputElement;
+      const messageInput = document.getElementById('message') as HTMLTextAreaElement;
+      const submitBtn = form.querySelector('.submit-btn') as HTMLButtonElement;
+
+      const name = nameInput.value.trim();
+      const message = messageInput.value.trim();
+
+      if (!name || !message) {
+        showToast('请填写昵称和留言内容', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>提交中...</span>';
+
+      setTimeout(() => {
+        const newMessage: Message = {
+          id: Date.now().toString(),
+          name,
+          message,
+          timestamp: Date.now()
+        };
+
+        const messages = getMessages();
+        messages.push(newMessage);
+        saveMessages(messages);
+
+        nameInput.value = '';
+        messageInput.value = '';
+        
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+          <span>提交留言</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M14 2L7 9M14 2L9.5 14L7 9M14 2L2 6.5L7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        `;
+
+        renderMessages();
+        showToast('留言成功！感谢你的留言', 'success');
+      }, 500);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderMessages();
+    initForm();
+  });
+</script>
