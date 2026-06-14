@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout title="博客">
+  <section class="blog-header">
+    <h1>
+      <span class="gradient-text">博客</span>
+    </h1>
+    <p class="subtitle">写下我对技术、设计和生活的思考与探索。</p>
+  </section>
+
+  <div class="posts-list">
+    {posts.map((post, i) => (
+      <a href={`/blog/${post.slug}`} class="post-item" style={`animation-delay: ${i * 0.05}s`}>
+        <div class="post-left">
+          <time datetime={post.data.pubDate.toISOString()}>
+            {post.data.pubDate.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
+          </time>
+        </div>
+        <div class="post-center">
+          <h2>{post.data.title}</h2>
+          <p>{post.data.description}</p>
+        </div>
+        <div class="post-right">
+          {post.data.tags?.length > 0 && (
+            <div class="tags">
+              {post.data.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          )}
+          <span class="arrow">→</span>
+        </div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .blog-header {
+    padding: 4rem 0 3rem;
+  }
+
+  .blog-header h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.5s ease backwards;
+  }
+
+  .gradient-text {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    animation: fadeInUp 0.5s ease 0.1s backwards;
+  }
+
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-item {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    animation: fadeInUp 0.4s ease backwards;
+  }
+
+  .post-item:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .post-item:hover {
+    padding-left: 1rem;
+    border-color: var(--border-hover);
+  }
+
+  .post-left time {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .post-center h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.3rem;
+    transition: color 0.2s;
+  }
+
+  .post-item:hover .post-center h2 {
+    color: var(--accent-2);
+  }
+
+  .post-center p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .post-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    background: rgba(108, 92, 231, 0.12);
+    color: var(--accent-2);
+    font-size: 0.7rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .arrow {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+  }
+
+  .post-item:hover .arrow {
+    color: var(--accent-2);
+    transform: translateX(4px);
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .post-item {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding: 1.25rem 0;
+    }
+
+    .post-left {
+      order: -1;
+    }
+
+    .post-right {
+      justify-content: flex-start;
+    }
+
+    .arrow {
+      display: none;
+    }
+  }
+</style>
