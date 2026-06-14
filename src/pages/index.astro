@@ -19,7 +19,7 @@ const posts = (await getCollection('blog')).sort(
       这里是我关于编程、设计与生活的数字花园。
     </p>
     <div class="hero-actions">
-      <a href="/blog" class="btn btn-primary">
+      <a href={`${import.meta.env.BASE_URL}/blog/`} class="btn btn-primary">
         <span>开始阅读</span>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -32,7 +32,7 @@ const posts = (await getCollection('blog')).sort(
   <section class="posts-section">
     <div class="section-header">
       <h2>最新文章</h2>
-      <a href="/blog" class="view-all">
+      <a href={`${import.meta.env.BASE_URL}/blog/`} class="view-all">
         查看全部
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -41,7 +41,7 @@ const posts = (await getCollection('blog')).sort(
     </div>
     <div class="posts-grid">
       {posts.slice(0, 3).map((post) => (
-        <a href={`/blog/${post.slug}`} class="post-card">
+        <a href={`${import.meta.env.BASE_URL}/blog/${post.slug}/`} class="post-card">
           <div class="post-card-inner">
             <div class="post-meta">
               <time datetime={post.data.pubDate.toISOString()}>
