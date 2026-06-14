@@ -261,6 +261,29 @@ const { title, description = 'Vingues 的个人博客' } = Astro.props;
     font-size: 0.85rem;
   }
 
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    font-weight: 600;
+    color: var(--text);
+    background: var(--bg-card);
+  }
+
+  tr:hover {
+    background: var(--bg-card-hover);
+  }
+
   @media (max-width: 768px) {
     main {
       padding: 2rem 1rem;
@@ -272,5 +295,12 @@ const { title, description = 'Vingues 的个人博客' } = Astro.props;
       gap: 1.25rem;
     }
 
+    table {
+      font-size: 0.85rem;
+    }
+
+    th, td {
+      padding: 0.5rem 0.75rem;
+    }
   }
 </style>
